@@ -1,0 +1,43 @@
+/* static/style.css */
+
+body {
+    background: url('/static/nature.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Segoe UI', sans-serif;
+    color: #fff;
+}
+
+.container {
+    max-width: 400px;
+    margin: 100px auto;
+    background: rgba(0, 0, 0, 0.4); /* transparent black */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+input.form-control, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: none;
+}
+
+input.form-control {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+}
+
+button {
+    background: #ff8800;
+    color: white;
+    font-weight: bold;
+}
+
+a {
+    color: #ffcc00;
+    text-decoration: none;
+}

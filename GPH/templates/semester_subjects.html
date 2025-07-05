@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Subjects - Semester {{ sem }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(120deg, #fbc2eb, #a6c1ee);
+      min-height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    h2 {
+      color: #fff;
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+    .subject-card {
+      background-color: white;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      font-weight: 600;
+      color: #333;
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-decoration: none;
+      display: block;
+    }
+    .subject-card:hover {
+      transform: translateY(-5px);
+      background-color: #4e54c8;
+      color: white;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+</head>
+<body>
+  {% include 'header.html' %}
+  <div class="container mt-5">
+    <h2>📘 Subjects in Semester {{ sem }}</h2>
+    <div class="row">
+      {% for subject in subjects %}
+      <div class="col-md-4 mt-4">
+        <a href="{{ url_for('subject_materials', sem=sem, subject=subject) }}" class="subject-card">
+          {{ subject }}
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% include 'footer.html' %}
+</body>
+</html>

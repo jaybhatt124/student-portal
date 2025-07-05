@@ -1,0 +1,125 @@
+{% include 'header.html' %}
+
+<style>
+  body {
+    background: linear-gradient(135deg, #2b5876, #4e4376);
+    color: #fff;
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+  }
+
+  .container {
+    padding: 40px;
+  }
+
+  h2 {
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #ffd700;
+  }
+
+  .upload-form {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+  }
+
+  .upload-form input[type="file"] {
+    background-color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .btn-upload {
+    background-color: #00c6ff;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    padding: 10px 25px;
+    border-radius: 10px;
+  }
+
+  .btn-upload:hover {
+    background-color: #0072ff;
+  }
+
+  .material-list {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 15px;
+  }
+
+  .material-list h4 {
+    color: #ffd700;
+    margin-bottom: 20px;
+  }
+
+  .list-group-item {
+    background-color: #ffffff;
+    color: #000;
+    border: none;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-weight: 500;
+  }
+
+  .btn-danger {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+</style>
+
+<body>
+    {% if role in ['admin', 'teacher'] %}
+        <div class="upload-form mt-4 p-4 bg-light rounded">
+            <h5 class="text-dark">Upload Material for {{ subject }} (Semester {{ sem }})</h5>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="file" name="material" class="form-control mb-2" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
+    {% endif %}
+
+</body>
+
+<div class="container">
+  <h2>Mathematics - Semester {{ sem }}</h2>
+
+  {% if role in ['admin', 'teacher'] %}
+  <div class="upload-form">
+    <form method="POST" enctype="multipart/form-data">
+      <input type="file" name="material" required>
+      <button type="submit" class="btn btn-upload">Upload Math Material</button>
+    </form>
+  </div>
+  {% endif %}
+
+  <div class="material-list">
+    <h4>Available Files</h4>
+    {% if files %}
+      <ul class="list-group">
+        {% for file in files %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{ file }}
+          {% if role in ['admin', 'teacher'] %}
+          <form method="POST" action="{{ url_for('delete_material', sem=sem, subject=subject, filename=file) }}">
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+          </form>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No math materials uploaded yet.</p>
+    {% endif %}
+  </div>
+</div>
+
+{% include 'footer.html' %}
