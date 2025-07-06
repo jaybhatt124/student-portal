@@ -1,10 +1,84 @@
+{% include 'header.html' %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Announcements</title>
+  <meta charset="UTF-8">
+  <title>Announcements</title>
+  <style>
+    body {
+      background: linear-gradient(120deg, #89f7fe, #66a6ff);
+      font-family: 'Segoe UI', sans-serif;
+    }
+    h2 {
+      text-align: center;
+      color: white;
+      margin-top: 20px;
+    }
+    .form-container, .announcements-container {
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+    .form-container input, .form-container textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .form-container button {
+      background-color: #4e54c8;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .announcement {
+      border-bottom: 1px solid #ccc;
+      padding: 15px 0;
+    }
+    .announcement h4 {
+      margin: 0;
+      color: #333;
+    }
+    .announcement p {
+      margin: 5px 0;
+    }
+    .announcement small {
+      color: gray;
+    }
+  </style>
 </head>
 <body>
-    <h2>All Announcements</h2>
-    <p>No announcements posted yet.</p>
+  <h2>📢 Announcements</h2>
+
+  {% if role in ['admin', 'teacher'] %}
+  <div class="form-container">
+    <form method="POST">
+      <input type="text" name="title" placeholder="Title" required>
+      <textarea name="content" rows="4" placeholder="Write your announcement..." required></textarea>
+      <button type="submit">Post</button>
+    </form>
+  </div>
+  {% endif %}
+
+  <div class="announcements-container">
+    {% for ann in announcements %}
+      <div class="announcement">
+        <h4>{{ ann[1] }}</h4>
+        <p>{{ ann[2] }}</p>
+        <small>Posted by {{ ann[3] }} on {{ ann[4].strftime('%d-%b-%Y %I:%M %p') }}</small>
+      </div>
+    {% else %}
+      <p>No announcements yet.</p>
+    {% endfor %}
+  </div>
 </body>
 </html>
+
+{% include 'footer.html' %}

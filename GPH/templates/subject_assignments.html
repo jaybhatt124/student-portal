@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ subject }} - Semester {{ sem }}</title>
+    <style>
+        body {
+          background: linear-gradient(120deg, #89f7fe, #66a6ff);
+          min-height: 100vh;
+          font-family: 'Segoe UI', sans-serif;
+        }
+        h3 {
+          color: #fff;
+          text-align: center;
+          margin-bottom: 30px;
+          font-weight: 700;
+        }
+        .upload-form, .assignment-table {
+          max-width: 800px;
+          margin: auto;
+          background: #fff;
+          border-radius: 12px;
+          padding: 20px;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        input[type="file"] {
+          margin-bottom: 10px;
+        }
+        .btn {
+          background-color: #4e54c8;
+          color: #fff;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 6px;
+          cursor: pointer;
+        }
+        .btn:hover {
+          background-color: #3333aa;
+        }
+        table {
+          width: 100%;
+          margin-top: 20px;
+          border-collapse: collapse;
+        }
+        th, td {
+          padding: 10px;
+          border-bottom: 1px solid #ccc;
+          text-align: left;
+        }
+        th {
+          background-color: #f0f0f0;
+        }
+        a.download-link {
+          color: #007bff;
+          text-decoration: none;
+        }
+        a.download-link:hover {
+          text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h3>{{ subject }} Assignments - Semester {{ sem }}</h3>
+
+    {% if role in ['admin', 'teacher'] %}
+    <div class="upload-form">
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="assignment" required>
+            <button type="submit" class="btn">Upload Assignment</button>
+        </form>
+    </div>
+    {% endif %}
+
+    {% if files %}
+    <div class="assignment-table">
+        <h4>Uploaded Assignments</h4>
+        <table>
+            <tr>
+                <th>Filename</th>
+                <th>Uploaded By</th>
+                <th>Date</th>
+                <th>Size (KB)</th>
+                {% if role in ['admin', 'teacher'] %}<th>Action</th>{% endif %}
+            </tr>
+            {% for file in files %}
+            <tr>
+                <td><a class="download-link" href="{{ url_for('download_assignment', sem=sem, subject=subject, filename=file) }}">{{ file }}</a></td>
+                <td>{{ upload_info[file].uploaded_by }}</td>
+                <td>{{ upload_info[file].uploaded_on }}</td>
+                <td>{{ upload_info[file].size }}</td>
+                {% if role in ['admin', 'teacher'] %}
+                <td>
+                    <form action="{{ url_for('delete_assignment', sem=sem, subject=subject, filename=file) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+</body>
+</html>

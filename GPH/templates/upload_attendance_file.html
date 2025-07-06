@@ -1,0 +1,15 @@
+{% include 'header.html' %}
+
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Upload Student List - {{ subject }} (Semester {{ sem }})</h2>
+
+  <form method="POST" enctype="multipart/form-data" class="p-4 bg-light rounded shadow">
+    <div class="form-group mb-3">
+      <label><strong>Select File (CSV / XLSX / PDF):</strong></label>
+      <input type="file" name="student_file" accept=".csv,.xlsx,.pdf" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Upload & Mark Attendance</button>
+  </form>
+</div>
+
+{% include 'footer.html' %}

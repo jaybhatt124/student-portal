@@ -1,73 +1,107 @@
 {% include 'header.html' %}
+
 <style>
   body {
-    background: linear-gradient(135deg, #43cea2, #185a9d);
-    color: white;
+    background: linear-gradient(135deg, #2b5876, #4e4376);
+    color: #fff;
     font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+  }
+
+  .container {
+    padding: 40px;
   }
 
   h2 {
-    text-align: center;
     font-weight: bold;
-    margin: 30px 0;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #ffd700;
   }
 
   .upload-form {
-    background: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 15px;
     margin-bottom: 30px;
+    text-align: center;
   }
 
-  .material-list {
-    background: white;
-    color: black;
-    padding: 20px;
-    border-radius: 10px;
+  .custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #4e4376;
+    font-weight: bold;
+    border-radius: 8px;
+    margin-right: 15px;
+    transition: background 0.3s;
   }
 
-  .material-item {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
+  .custom-file-upload:hover {
+    background-color: #dddddd;
+  }
+
+  .custom-file-upload input[type="file"] {
+    display: none;
   }
 
   .btn-upload {
     background-color: #00c6ff;
-    color: white;
+    color: #fff;
     border: none;
     font-weight: bold;
+    padding: 10px 25px;
+    border-radius: 10px;
+    transition: background 0.3s;
   }
 
   .btn-upload:hover {
     background-color: #0072ff;
   }
 
-  .btn-delete {
-    background-color: #ff4b2b;
-    color: white;
+  .material-list {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 15px;
   }
 
-  .btn-delete:hover {
-    background-color: #b71c1c;
+  .material-list h4 {
+    color: #ffd700;
+    margin-bottom: 20px;
   }
 
-  .file-icon {
-    margin-right: 10px;
-    font-weight: bold;
+  .list-group-item {
+    background-color: #ffffff;
+    color: #000;
+    border: none;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-weight: 500;
   }
+
+  .btn-danger,
+  .btn-view,
+  .btn-download {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    margin-left: 5px;
+  }
+
 </style>
 
-<div class="container mt-5">
-  <h2>Materials - Semester {{ sem }} - {{ subject }}</h2>
+<div class="container">
+  <h2>{{ subject }} - Semester {{ sem }}</h2>
 
-  <!-- Show upload form only to admin/teacher -->
   {% if role in ['admin', 'teacher'] %}
   <div class="upload-form">
     <form method="POST" enctype="multipart/form-data">
-      <div class="mb-3">
-        <input type="file" name="material" class="form-control" required>
-      </div>
-      <button type="submit" class="btn btn-upload">Upload Material</button>
+      <label class="custom-file-upload">
+        <input type="file" name="material" required>
+        Choose File
+      </label>
+      <button type="submit" class="btn btn-upload">Upload</button>
     </form>
   </div>
   {% endif %}
@@ -75,27 +109,29 @@
   <div class="material-list">
     <h4>Available Files</h4>
     {% if files %}
-    <ul class="list-group">
-      {% for file in files %}
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span>
-          <span class="file-icon">📄</span>
-          {{ file }}
-        </span>
-        <span>
-          <a class="btn btn-sm btn-primary" href="{{ url_for('static', filename='uploads/sem' ~ sem ~ '/' ~ subject ~ '/' ~ file) }}" target="_blank">View</a>
-          
-          {% if role in ['admin', 'teacher'] %}
-          <form method="POST" action="{{ url_for('delete_material', sem=sem, subject=subject, filename=file) }}" style="display:inline;">
-            <button class="btn btn-sm btn-delete" type="submit">Delete</button>
-          </form>
-          {% endif %}
-        </span>
-      </li>
-      {% endfor %}
-    </ul>
+      <ul class="list-group">
+        {% for file in files %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            📄 {{ file }}
+            <small class="text-muted d-block">
+              {{ upload_info[file].uploaded_on }} | {{ upload_info[file].size }} KB | by {{ upload_info[file].uploaded_by }}
+            </small>
+          </div>
+          <div>
+            <a href="{{ url_for('download_file', sem=sem, subject=subject, filename=file) }}" class="btn btn-sm btn-download btn-success" download>Download</a>
+            <a href="{{ url_for('download_file', sem=sem, subject=subject, filename=file) }}" target="_blank" class="btn btn-sm btn-view btn-info">View</a>
+            {% if role in ['admin', 'teacher'] %}
+            <form method="POST" action="{{ url_for('delete_material', sem=sem, subject=subject, filename=file) }}" style="display:inline;">
+              <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+            </form>
+            {% endif %}
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
     {% else %}
-    <p>No materials uploaded yet.</p>
+      <p>No materials uploaded yet.</p>
     {% endif %}
   </div>
 </div>

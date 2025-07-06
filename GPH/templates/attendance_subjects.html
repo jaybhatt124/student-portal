@@ -1,0 +1,65 @@
+{% include 'header.html' %}
+
+<style>
+  body {
+    background: linear-gradient(to right, #667eea, #764ba2);
+    color: #fff;
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+  }
+
+  .container {
+    padding: 50px 20px;
+  }
+
+  h2 {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 40px;
+    color: #ffd700;
+  }
+
+  .card {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+
+  .card:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.03);
+    cursor: pointer;
+  }
+
+  .row {
+    justify-content: center;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+</style>
+
+<div class="container">
+  <h2>Select Subject - Semester {{ sem }}</h2>
+  <div class="row g-4">
+    {% for subject in subjects %}
+      <div class="col-md-4">
+        <a href="{{ url_for('subject_attendance', sem=sem, subject=subject) }}">
+          <div class="card">
+            {{ subject }}
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% include 'footer.html' %}

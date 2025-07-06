@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subjects - Semester {{ sem }}</title>
+    <style>
+        body {
+          background: linear-gradient(120deg, #89f7fe, #66a6ff);
+          min-height: 100vh;
+          font-family: 'Segoe UI', sans-serif;
+        }
+        h3 {
+          color: #fff;
+          text-align: center;
+          margin-bottom: 30px;
+          font-weight: 700;
+        }
+        .semester-btn {
+          background: #ffffff;
+          color: #333;
+          font-size: 1.1rem;
+          font-weight: 600;
+          border: none;
+          transition: all 0.3s ease-in-out;
+          padding: 15px;
+          border-radius: 12px;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+          display: block;
+          margin: 10px auto;
+          width: 300px;
+          text-align: center;
+          text-decoration: none;
+        }
+        .semester-btn:hover {
+          background-color: #4e54c8;
+          color: #fff;
+          transform: scale(1.05);
+          box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <h3>Subjects - Semester {{ sem }}</h3>
+    {% for subject in subjects %}
+        <a href="{{ url_for('subject_assignments', sem=sem, subject=subject) }}" class="semester-btn">{{ subject }}</a>
+    {% endfor %}
+</body>
+</html>

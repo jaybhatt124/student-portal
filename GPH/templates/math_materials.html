@@ -74,21 +74,6 @@
   }
 </style>
 
-<body>
-    {% if role in ['admin', 'teacher'] %}
-        <div class="upload-form mt-4 p-4 bg-light rounded">
-            <h5 class="text-dark">Upload Material for {{ subject }} (Semester {{ sem }})</h5>
-            <form method="POST" enctype="multipart/form-data">
-                <div class="form-group">
-                    <input type="file" name="material" class="form-control mb-2" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Upload</button>
-            </form>
-        </div>
-    {% endif %}
-
-</body>
-
 <div class="container">
   <h2>Mathematics - Semester {{ sem }}</h2>
 

@@ -1,31 +1,83 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="container mt-4">
-    <h2 class="text-center mb-4">Gallery</h2>
 
-    {% if images %}
-    <div class="row">
+{% include 'header.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery</title>
+    <style>
+        body {
+            background: linear-gradient(120deg, #89f7fe, #66a6ff);
+            font-family: 'Segoe UI', sans-serif;
+        }
+        h2 {
+            text-align: center;
+            color: white;
+            margin: 30px 0;
+        }
+        .gallery-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .gallery-item {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .gallery-item img {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .delete-btn {
+            margin-top: 10px;
+            padding: 6px 12px;
+            background: crimson;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .upload-form {
+            text-align: center;
+            margin: 20px;
+        }
+        .upload-form input[type="file"] {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>📷 College Gallery</h2>
+
+    {% if role in ['admin', 'teacher'] %}
+    <div class="upload-form">
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="image" required>
+            <br>
+            <button type="submit" class="semester-btn">Upload Image</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="gallery-container">
         {% for img in images %}
-        <div class="col-md-3 mb-4">
-            <div class="card shadow-sm">
-                <img src="{{ url_for('static', filename='uploads/gallery/' ~ img) }}" class="card-img-top" alt="Gallery Image">
-            </div>
+        <div class="gallery-item">
+            <img src="{{ url_for('static', filename='gallery/' ~ img) }}" alt="Gallery">
+            {% if role in ['admin', 'teacher'] %}
+            <form method="post" action="{{ url_for('delete_gallery_image', filename=img) }}">
+                <button type="submit" class="delete-btn">Delete</button>
+            </form>
+            {% endif %}
         </div>
         {% endfor %}
     </div>
-    {% else %}
-    <p class="text-center text-muted">No images uploaded yet.</p>
-    {% endif %}
+</body>
+</html>
 
-    {% if session.get('role') in ['admin', 'teacher'] %}
-    <hr>
-    <h4>Upload New Image</h4>
-    <form method="POST" action="{{ url_for('upload_gallery') }}" enctype="multipart/form-data">
-        <div class="mb-3">
-            <input type="file" name="image" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Upload</button>
-    </form>
-    {% endif %}
-</div>
-{% endblock %}
+{% include 'footer.html' %}

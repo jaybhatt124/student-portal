@@ -1,7 +1,7 @@
 -- Create the database
 CREATE DATABASE IF NOT EXISTS student_portal;
 USE student_portal;
-
+SELECT * FROM students;
 -- Users table
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -13,6 +13,9 @@ CREATE TABLE users (
     role ENUM('admin', 'teacher', 'student') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE users ADD COLUMN enrollment_no VARCHAR(50);
+
 
 -- Attendance table
 CREATE TABLE attendance (
@@ -118,6 +121,15 @@ CREATE TABLE attendance (
   date DATE,
   status VARCHAR(10)
 );
+
+CREATE TABLE announcements (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255),
+    content TEXT,
+    posted_by VARCHAR(100),
+    posted_on DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 
 ALTER TABLE users MODIFY name VARCHAR(255) NULL;
 

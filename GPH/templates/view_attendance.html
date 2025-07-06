@@ -1,0 +1,76 @@
+{% include 'header.html' %}
+
+<style>
+  body {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #fff;
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+  }
+
+  .container {
+    padding: 40px;
+  }
+
+  h2 {
+    font-weight: bold;
+    text-align: center;
+    color: #ffd700;
+    margin-bottom: 30px;
+  }
+
+  .attendance-card {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .attendance-card h5 {
+    color: #00ffcc;
+    font-weight: 600;
+  }
+
+  .progress {
+    height: 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .progress-bar {
+    font-weight: bold;
+    color: #000;
+  }
+
+  .percent {
+    font-weight: bold;
+    font-size: 1rem;
+  }
+</style>
+
+<div class="container">
+  <h2>Your Subject-wise Attendance</h2>
+
+  {% if attendance_data %}
+    {% for subject, data in attendance_data.items() %}
+    <div class="attendance-card">
+      <h5>{{ subject }}</h5>
+      <p>Total Days: {{ data.total }}, Present: {{ data.present }}</p>
+      <div class="progress mb-2">
+        <div class="progress-bar bg-success"
+             role="progressbar"
+             style="width: {{ data.percent }}%;"
+             aria-valuenow="{{ data.percent }}"
+             aria-valuemin="0"
+             aria-valuemax="100">
+          {{ data.percent }}%
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-center">No attendance records available.</p>
+  {% endif %}
+</div>
+
+{% include 'footer.html' %}
